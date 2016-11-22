@@ -35,6 +35,5 @@ class AgentManager(asyncio.Protocol):
 				self.state = 1
 		elif self.state == 1:
 			data = json.loads(data.decode())
-			print(data)
-			# save data
+			self.manager.file_logger.log(data)
 			self.transport.close()

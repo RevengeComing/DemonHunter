@@ -7,7 +7,7 @@ To run a simple Honeypot:
 import asyncio
 
 from demonhunter import DemonHunter
-from demonhunter.nodes.honeypots.telnet import TelnetHoneypot
+from demonhunter.nodes.honeypots.telnet import TelnetHoneypot, DebianTelnet, MicrosoftTelnet
 from demonhunter.nodes.honeypots import Agent
 
 loop = asyncio.get_event_loop()
@@ -15,6 +15,7 @@ loop = asyncio.get_event_loop()
 hp = DemonHunter(loop)
 
 telnet = TelnetHoneypot()
+telnet.handler = MicrosoftTelnet # or DebianTelnet
 hp.add_honeypot(telnet)
 
 hp.start()
@@ -34,7 +35,7 @@ if you want a honeypot with agent:
 import asyncio
 
 from demonhunter import DemonHunter
-from demonhunter.nodes.honeypots.telnet import TelnetHoneypot
+from demonhunter.nodes.honeypots.telnet import TelnetHoneypot, DebianTelnet, MicrosoftTelnet
 from demonhunter.nodes.honeypots import Agent
 
 loop = asyncio.get_event_loop()
@@ -42,6 +43,7 @@ loop = asyncio.get_event_loop()
 hp = DemonHunter(loop)
 
 telnet = TelnetHoneypot()
+telnet.handler = MicrosoftTelnet # or DebianTelnet
 hp.add_honeypot(telnet)
 
 agent = Agent(["127.0.0.1"], [telnet], loop) # change 127.0.0.1 with yout Agent Manager Address
@@ -67,7 +69,7 @@ from demonhunter import Manager
 
 loop = asyncio.get_event_loop()
 
-manager = Manager(loop)
+manager = Manager(loop, logfile='test.log')
 manager.add_agent_address('127.0.0.1')
 
 try:

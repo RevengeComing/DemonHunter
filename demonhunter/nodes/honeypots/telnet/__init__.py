@@ -194,6 +194,23 @@ class TelnetHandler(asyncio.Protocol, BaseHandler):
         self.honeypot.active_attacks -= 1
 
 
+class DebianTelnet(TelnetHandler):
+    def welcome_message(self):
+        return b"Debian GNU/Linux 7\r\n\n"
+
+    def login_prompt(self):
+        return b"Login: "
+
+
+class MicrosoftTelnet(TelnetHandler):
+
+    def welcome_message(self):
+        return b"Welcome to Microsoft Telnet Service\r\n\n"
+
+    def login_prompt(self):
+        return b"login: "
+
+
 class TelnetHoneypot:
 
     syslog = False

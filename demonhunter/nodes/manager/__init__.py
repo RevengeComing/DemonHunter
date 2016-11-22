@@ -2,13 +2,14 @@ from aiohttp import web
 
 from demonhunter.nodes.manager.app import add_routes, run_app
 from demonhunter.nodes.manager.agent.server import AgentManager
+from demonhunter.core.loggers.logfile import FileLogger
 
 
 class Manager:
 
     agents = list()
 
-    def __init__(self, loop, agent_manager=True, web_app=None, agent_password=None):
+    def __init__(self, loop, agent_manager=True, web_app=None, agent_password=None, logfile=None):
         self.loop = loop
 
         if agent_manager:
@@ -21,6 +22,10 @@ class Manager:
             app = web.Application(loop=self.loop)
             add_routes(app)
             run_app(app)
+
+        if logfile:
+            self.file_logger = FileLogger(logfile)
+
 
     def add_agent_address(self, address):
         self.agents.append(address)
