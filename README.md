@@ -2,6 +2,14 @@
 
 If you want to create low interaction Honepot Server in less than an hour you should follow this repository. 
 
+## Installation:
+install DemonHunter from pypi:
+```
+pip install demonhunter
+```
+
+---------------------------
+
 To run a simple Honeypot:
 ```
 import asyncio
@@ -82,3 +90,8 @@ loop.close()
 
 The Agent Manager Server runs on port 16742, it has also a web_app running on port 8080 but not yet complete.
 
+
+###### TODO:
+- Create Example Code
+- Create Web App For Manager
+- Documentation
