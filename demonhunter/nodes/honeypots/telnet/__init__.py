@@ -186,7 +186,7 @@ class TelnetHandler(asyncio.Protocol, BaseHandler):
                                                                              str(self.username),
                                                                              str(password)))
         data = {'protocol':'telnet', 'from':self.transport.get_extra_info('peername')[0],
-                'username':str(self.username), 'password':str(password), 'time':attack_time}
+                'username':self.username.decode('utf-8'), 'password':password.decode('utf-8'), 'time':attack_time}
         self.save_data(data)
 
     def connection_lost(self, exc):
