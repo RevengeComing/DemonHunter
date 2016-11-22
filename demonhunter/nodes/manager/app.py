@@ -15,6 +15,7 @@ def run_app(app, *, host='0.0.0.0', port=None,
             shutdown_timeout=60.0, ssl_context=None,
             print=print, backlog=128, access_log_format=None,
             access_log=access_logger):
+    """ Copied From aiohttp's main run_app """
 
     if port is None:
         if not ssl_context:
