@@ -4,7 +4,7 @@ If you want to create low interaction Honepot Server in less than an hour you sh
 
 ## Documentation
 
-check [Here](https://revengecoming.github.com/DemonHunter/) , i'll place all docs here.
+check [Here](https://revengecoming.github.io/DemonHunter/) , i'll place all docs here.
 
 ## Contribution
 
