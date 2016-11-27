@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>DemonHunter Honeypot</title>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+<body>
+	<nav class="navbar navbar-default">
+	  <div class="container-fluid">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    <div class="navbar-header">
+	      <a class="navbar-brand" href="#">DemonHunter</a>
+	    </div>
+	  </div><!-- /.container-fluid -->
+	</nav>
+	<div class="container">
+		<div class="row">
+			<!-- Stack the columns on mobile by making one full-width and the other half-width -->
+			<div class="col-md-9">
+				<div class="bs-docs-section">
+					<h2 class="page-header" id="introduction">Introduction</h1>
+					<p>DemonHunter is a framework to create a distributed Honeypot network easily in few minutes. DemonHunter is written in python(+3.5) and with help of asyncio library. it is currently in version 1 which supports basic concepts of distributed honeypot including:</p>
+					<ul>
+						<li>Nodes
+							<ul>
+								<li>Manager
+									<ul>
+										<li>AgentManager Protocol(to recieve data from agents)</li>
+										<li><strike>WebApplication</strike>(Under Developement)</li>
+									</ul>
+								</li>
+								<br>
+								<li>Honeypots
+									<ul>
+										<li>AgentProtocol(to send data to manager)</li>
+										<li>BaseProtocol(to write your own honeypot protocol)</li>
+										<br>
+										<li>Telnet Honeypot</li>
+										<li>VNC Honeypot</li>
+										<li><strike>HTTP Honeypot</strike>(Under Developement)</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<br>
+						<li>Core
+							<ul>
+								<li>FileLoggin(in syslog format)</li>
+								<li><strike>Sqlite</strike>(Under Developement)</li>
+							</ul>
+						</li>
+					</ul>
+					<p>Its under rapid developement and more features will come.</p>
+					
+				</div>
+
+				<div class="bs-docs-section">
+					<h2 class="page-header" id="installation">Installation</h1>
+					<p>To install DemonHunter you need python +3.5 envirement if you have python +3.5 on your machine you can simply run:</p> 
+					<figure class="highlight">
+						<code>
+							virtualenv -p python3.5 [envirement_name] # or -p python3 if your default python3 is +3.5
+						</code>
+					</figure>
+					<p>To create your envirement with default python version 3.5.</p>
+					<p>After activating your virtualenv, to install DemonHunter on your virtual envirement you can simply run:</p>
+					<figure class="highlight">
+						<code>
+							pip install demonhunter
+						</code>
+					</figure>
+					<p>If DemonHunter Installed Without issue you can import it in your python shell.</p>
+					
+				</div>
+
+				<div class="bs-docs-section">
+					<h2 class="page-header" id="run">Run A Simple Honeypot</h1>
+					<p>To Make a Machine Honeypot you need to create an instance of demonhunter.DemonHunter, the only argument the constructor takes is and event loop object, which we use asyncio's event loop for now.</p>
+					<p>Then We need to add some protocols for our honeypot, for now we only support VNC and Telnet and soon HTTP honeypots.</p>
+					<p>To Create Honeypot Protocols you need to import them from demonhunter.nodes.honeypots.telnet or demonhunter.nodes.honeypots.vnc. Create an instance and with DemonHunter.add_honeypot function add the instance to our honeypot servers.</p>
+					<p>The Constructor for honeypot instances takes these key arguments:</p>
+					<ul>handler=VNCHandler, port=5900
+						<li>logfile=False ( to log the attacks in syslog format in the machine, NOT WORKING YET )</li>
+						<li>sqlite=False ( to log the attacks in sqlite format in the machine, NOT WORKING YET)</li>
+						<li>interfaces=['0.0.0.0'] ( interfaces you want your honeypot to accept connection from )</li>
+						<li>handler=(each honeypot protocol has its default handler but you can change it)
+							<ul>
+								<li>TelnetHandler(Default for telnet Honeypots)</li>
+								<li>MicrosoftTelnet</li>
+								<li>DebianTelnet</li>
+								<li>VNCHandler(Default for VNC Honeypots)</li>
+							</ul>
+						</li>
+						<li>port=(each honeypot protocol has its default port but you can change it)</li>
+					</ul>
+					<p>You Can Create an Agent for your honeypot to send the honeypot data's to a manager server which holds data if you dont want to log data in the honeypot server.</p>
+					<p>Import agent from from demonhunter.nodes.honeypots.Agent, the constructor takes these arguments:</p>
+					<ul>
+						<li>list of manager's ip or domain, example : ['z.z.z.z']</li>
+						<li>list of honeypot server's objects, example : [telnet, vnc]</li>
+						<li>the event loop</li>
+					</ul>
+					<figure class="highlight">
+						<code>
+							import asyncio<br>
+<br>
+							from demonhunter import DemonHunter<br>
+							from demonhunter.nodes.honeypots.telnet import TelnetHoneypot, MicrosoftTelnet<br>
+							from demonhunter.nodes.honeypots.vnc import VNCHoneypot<br>
+							from demonhunter.nodes.honeypots import Agent<br>
+<br>
+							loop = asyncio.get_event_loop()<br>
+<br>
+							hp = DemonHunter(loop)<br>
+<br>
+							vnc = VNCHoneypot()<br>
+							hp.add_honeypot(vnc)<br>
+<br>
+							telnet = TelnetHoneypot(port=8023, handler=MicrosoftTelnet, interfaces=["x.x.x.x", "y.y.y.y"])<br>
+							hp.add_honeypot(telnet)<br>
+<br>
+<br>
+							agent = Agent(["z.z.z.z"], [telnet, vnc], loop)<br>
+							hp.add_agent(agent)<br>
+<br>
+							hp.start()<br>
+<br>
+							try:<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;loop.run_forever()<br>
+							except KeyboardInterrupt:<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;hp.stop()<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;print("\nServer Closed")<br>
+<br>
+							loop.close()<br>
+						</code>
+					</figure>
+					
+				</div>
+
+				<div class="bs-docs-section">
+					<h2 class="page-header" id="manager">Create Manager</h1>
+					<p>Manager server is where honeypot data's will be sent, so we need to catch all data's from them, default port for manager server is 16742, and it will listen on this port and waiting for data's from honeypots we included.</p>
+					<p>To make a Manager server simply run this code:</p>
+					<figure>
+						<code>
+import asyncio<br>
+<br>
+from demonhunter import Manager<br>
+<br>
+loop = asyncio.get_event_loop()<br>
+<br>
+manager = Manager(loop, logfile='test.log')<br>
+manager.add_agent_address('127.0.0.1')<br>
+<br>
+try:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;loop.run_forever()<br>
+except KeyboardInterrupt:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print("\nServer Closed")<br>
+<br>
+loop.close()<br>
+						</code>
+					</figure>
+					<p>Create a demonhunter.Manager object and add honeypot address so it can accept data from the address and run it.</p>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<nav class="bs-docs-sidebar hidden-print hidden-sm hidden-xs affix">
+					<ul class="nav bs-docs-sidenav">
+						<li>
+							<a href="#introduction">Introduction</a>
+							<a href="#installation">Installation</a>
+							<a href="#run">Run A Simple Honeypot</a>
+							<a href="#manager">Create Manager</a>
+						</li>
+						
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</div>
+	<a href="http://github.com/RevengeComing/DemonHunter"><img style="position: fixed; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+</body>
+</html>
