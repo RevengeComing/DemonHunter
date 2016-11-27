@@ -1,4 +1,4 @@
-from demonhunter.nodes.honeypots import BaseHandler
+from demonhunter.nodes.honeypots import BaseHandler, BaseHoneypot
 
 import asyncio
 import time
@@ -32,6 +32,7 @@ iacBytes = {
 class TelnetHandler(asyncio.Protocol, BaseHandler):
     """
     Copied twisted.protocols.telnet.Telnet mechanism.
+    Thankyou twisted <3.
     """
 
     state = 0
@@ -185,8 +186,13 @@ class TelnetHandler(asyncio.Protocol, BaseHandler):
         print('Attack from {0}, with username {1}, and password {2}.'.format(self.transport.get_extra_info('peername')[0],
                                                                              str(self.username),
                                                                              str(password)))
-        data = {'protocol':'telnet', 'from':self.transport.get_extra_info('peername')[0],
-                'username':self.username.decode('utf-8'), 'password':password.decode('utf-8'), 'time':attack_time}
+        data = {
+            'protocol':'telnet',
+            'from':self.transport.get_extra_info('peername')[0],
+            'username':self.username.decode('utf-8'),
+            'password':password.decode('utf-8'),
+            'time':attack_time
+        }
         self.save_data(data)
 
     def connection_lost(self, exc):
@@ -211,15 +217,9 @@ class MicrosoftTelnet(TelnetHandler):
         return b"login: "
 
 
-class TelnetHoneypot:
+class TelnetHoneypot(BaseHoneypot):
 
-    syslog = False
-    sqlite = False
-    agents = []
-
-    active_attacks = 0
-
-    interfaces = ['0.0.0.0']
-    port = 23
-
-    handler = TelnetHandler
+    def __init__(self, handler=TelnetHandler, port=23, **kwargs):
+        super(TelnetHoneypot, self).__init__(**kwargs)
+        self.handler = handler
+        self.port = port

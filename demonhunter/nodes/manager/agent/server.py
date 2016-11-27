@@ -35,5 +35,6 @@ class AgentManager(asyncio.Protocol):
 				self.state = 1
 		elif self.state == 1:
 			data = json.loads(data.decode())
+			data['attack_to'] = self.transport.get_extra_info('peername')[0]
 			self.manager.file_logger.log(data)
 			self.transport.close()

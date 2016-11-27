@@ -3,11 +3,12 @@ import json
 
 
 class BaseHandler:
+    # https://svn.nmap.org/nmap/nmap-service-probes
 
     def save_data(self, data):
         if self.honeypot.sqlite:
             self.save_in_sqlite(data)
-        if self.honeypot.syslog:
+        if self.honeypot.logfile:
             self.save_logfile(data)
         self.alter_agents(data)
 
@@ -20,6 +21,24 @@ class BaseHandler:
 
     def save_logfile(data):
         pass
+
+
+class BaseHoneypot:
+    
+    active_attacks = 0
+
+    def __init__(self, logfile=False, sqlite=False, interfaces=['0.0.0.0'], agents=[]):
+        self.logfile = logfile
+        self.sqlite = sqlite
+        self.interfaces = interfaces
+        self.agents = agents
+
+    def create_server(self, loop):
+        coro = loop.create_server(lambda: self.handler(self), self.interfaces, self.port)
+        server = loop.run_until_complete(coro)
+        for socket in server.sockets:
+            print('Serving on {0}'.format(socket.getsockname()))
+        return server
 
 
 class Agent():

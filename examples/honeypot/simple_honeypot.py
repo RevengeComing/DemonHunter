@@ -2,6 +2,7 @@ import asyncio
 
 from demonhunter import DemonHunter
 from demonhunter.nodes.honeypots.telnet import TelnetHoneypot, MicrosoftTelnet
+from demonhunter.nodes.honeypots.vnc import VNCHoneypot
 from demonhunter.nodes.honeypots import Agent
 
 loop = asyncio.get_event_loop()
@@ -10,14 +11,22 @@ loop = asyncio.get_event_loop()
 hp = DemonHunter(loop)
 
 # Create your honeypot instaces, telnet/ssh/...
-telnet = TelnetHoneypot()
-# Which Handler You Prefer for your honeypot ?
-telnet.handler = MicrosoftTelnet
-# Add your honeypots to handler
+vnc = VNCHoneypot(interfaces=["b.b.b.b"])
+# Add your honeypots to DemnonHunter Instance
+hp.add_honeypot(vnc)
+
+# Create your honeypot instaces, telnet/ssh/...
+telnet = TelnetHoneypot(port=8023, handler=MicrosoftTelnet, interfaces=["x.x.x.x", "y.y.y.y"])
+# Add your honeypots to DemnonHunter Instance
 hp.add_honeypot(telnet)
 
 # Create An Agent, Where Should data transfered ?
-agent = Agent(["127.0.0.1"], [telnet], loop)
+agent = Agent(["z.z.z.z"], [telnet, vnc], loop)
+# Add The Agent To your DemonHunter Instance
+hp.add_agent(agent)
+
+# Create An Agent, and only send telnet data's ?
+agent = Agent(["a.a.a.a"], [telnet], loop)
 # Add The Agent To your DemonHunter Instance
 hp.add_agent(agent)
 

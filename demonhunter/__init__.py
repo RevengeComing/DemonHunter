@@ -20,11 +20,8 @@ class DemonHunter:
 
     def start(self):
         for honeypot in self.honeypots:
-            for interface in honeypot.interfaces:
-                coro = self.loop.create_server(lambda: honeypot.handler(honeypot), interface, honeypot.port)
-                server = self.loop.run_until_complete(coro)
-                self.servers.append(server)
-                print('Serving on {0}'.format(server.sockets[0].getsockname()))
+            server = honeypot.create_server(self.loop)
+            self.servers.append(server)
 
     def stop(self):
         for server in self.servers:
