@@ -8,7 +8,6 @@ from demonhunter.core.loggers.logfile import FileLogger
 class Manager:
 
     agents = list()
-
     def __init__(self, loop, server_address, agent_manager=True,
                  web_app=None, agent_password=None, logfile=None,
                  port=16742):

@@ -5,6 +5,5 @@ __maintainer__ = "Sepehr Hamzehlouy"
 __email__ = "s.hamzelooy@gmail.com"
 __status__ = "Development"
 
-
 from demonhunter.nodes.manager import Manager
 from demonhunter.dh import DemonHunter

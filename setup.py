@@ -25,7 +25,7 @@ setup(
 
         'Programming Language :: Python :: 3.5',
     ],
-    install_requires=['aiohttp'],
+    install_requires=['flask', 'httptools'],
     packages=find_packages(),
 
     keywords='honeypot honeynet agent',

@@ -34,6 +34,7 @@ class BaseHoneypot:
         self.agents = agents
 
     def create_server(self, loop):
+        print(self)
         coro = loop.create_server(lambda: self.handler(self), self.interfaces, self.port)
         server = loop.run_until_complete(coro)
         for socket in server.sockets:
