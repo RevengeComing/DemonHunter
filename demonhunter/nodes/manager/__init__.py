@@ -9,11 +9,17 @@ class Manager:
 
     agents = list()
 
-    def __init__(self, loop, agent_manager=True, web_app=None, agent_password=None, logfile=None):
+    def __init__(self, loop, server_address, agent_manager=True,
+                 web_app=None, agent_password=None, logfile=None,
+                 port=16742):
+        self.server_address = server_address
         self.loop = loop
+        self.port = port
 
         if agent_manager:
-            coro = self.loop.create_server(lambda: AgentManager(self), '127.0.0.1', 16742)
+            if self.server_address is None:
+                self.server_address = "127.0.0.1"
+            coro = self.loop.create_server(lambda: AgentManager(self), self.server_address, self.port)
             server = self.loop.run_until_complete(coro)
             print('AgentManager Serving on {0}'.format(server.sockets[0].getsockname()))
             self.agent_password = agent_password
