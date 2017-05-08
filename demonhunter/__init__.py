@@ -1,28 +1,10 @@
-import asyncio
+__author__ = "Sepehr Hamzehlouy"
+__copyright__ = "Copyright 2016, Sepehr Hamzehlouy"
+__version__ = "1.0.2"
+__maintainer__ = "Sepehr Hamzehlouy"
+__email__ = "s.hamzelooy@gmail.com"
+__status__ = "Development"
+
 
 from demonhunter.nodes.manager import Manager
-
-
-class DemonHunter:
-
-    honeypots = list()
-    servers = list()
-    agents = list()
-
-    def __init__(self, loop):
-        self.loop = loop
-
-    def add_honeypot(self, honeypot):
-        self.honeypots.append(honeypot)
-
-    def add_agent(self, agent):
-        self.agents.append(agent)
-
-    def start(self):
-        for honeypot in self.honeypots:
-            server = honeypot.create_server(self.loop)
-            self.servers.append(server)
-
-    def stop(self):
-        for server in self.servers:
-            server.close()
+from demonhunter.dh import DemonHunter
