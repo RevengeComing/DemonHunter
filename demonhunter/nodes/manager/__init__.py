@@ -8,10 +8,11 @@ from demonhunter.core.loggers.logfile import FileLogger
 class Manager:
 
     agents = list()
-    def __init__(self, loop, server_address, agent_manager=True,
+    def __init__(self, loop, server_address, webapp_address, agent_manager=True,
                  web_app=None, agent_password=None, logfile=None,
                  port=16742):
         self.server_address = server_address
+        self.webapp_address = webapp_address
         self.loop = loop
         self.port = port
 
@@ -26,7 +27,10 @@ class Manager:
         if not web_app:
             app = web.Application(loop=self.loop)
             add_routes(app)
-            run_app(app)
+            if self.webapp_address is None:
+                # this will only run internally, which I think is safe, but could run it on 0.0.0.0 by default
+                self.webapp_address = "127.0.0.1"
+            run_app(app, host=self.webapp_address)
 
         if logfile:
             self.file_logger = FileLogger(logfile)
