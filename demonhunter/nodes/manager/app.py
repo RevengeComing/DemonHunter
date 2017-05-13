@@ -11,7 +11,7 @@ def index(request):
 def add_routes(app):
 	app.router.add_get('/', index)
 
-def run_app(app, *, host='0.0.0.0', port=None,
+def run_app(app, *, host, port=None,
             shutdown_timeout=60.0, ssl_context=None,
             print=print, backlog=128, access_log_format=None,
             access_log=access_logger):
@@ -37,5 +37,5 @@ def run_app(app, *, host='0.0.0.0', port=None,
                                                               loop=loop))
 
     scheme = 'https' if ssl_context else 'http'
-    url = '{}://localhost:{}'.format(scheme, port)
+    url = '{}://{}:{}'.format(scheme, host, port)
     print("DemonHunter Manager Web App Running on {}".format(url))
