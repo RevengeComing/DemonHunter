@@ -8,7 +8,7 @@ loop = asyncio.get_event_loop()
 # manager = Manager(loop, server_address='10.10.10.10', logfile='events.log')
 manager = Manager(loop, server_address=None, logfile='events.log')
 # Specify The Location of Agents ?
-manager.add_agent_address("107.170.73.18")
+manager.add_agent_address("0.0.0.0")
 
 try:
     loop.run_forever()
