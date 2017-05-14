@@ -2,6 +2,16 @@
 
 If you want to create low interaction Honepot Server in less than an hour you should follow this repository. 
 
+## Requirements
+Python 3.5
+
+## Installation
+
+For the latest version
+```
+pip install git+https://github.com/RevengeComing/DemonHunter.git
+```
+
 ## Documentation
 
 check [Here](https://revengecoming.github.io/DemonHunter/) , i'll place all docs here.
