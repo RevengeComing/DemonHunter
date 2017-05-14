@@ -30,7 +30,7 @@ class DemonHunter:
         self.loop = loop
         global current_hunter
         if current_hunter:
-            raise Exception("You Alreade made a DemonHunter instance ...")
+            raise Exception("You already made a DemonHunter instance ...")
         current_hunter = self
 
     def add_honeypot(self, honeypot):
