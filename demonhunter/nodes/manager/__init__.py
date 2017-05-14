@@ -20,7 +20,7 @@ class Manager:
         self.key = key
 
         # configure communication via ssl if the certificate and key are present
-        if self.certificate is not None and self.certificate is not None:
+        if self.certificate is not None and self.key is not None:
             assert os.path.isfile(self.certificate)
             assert os.path.isfile(self.key)
             sc = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
