@@ -1,6 +1,6 @@
 # DemonHunter
 
-If you want to create low interaction Honepot Server in less than an hour you should follow this repository. 
+If you want to create low interaction Honepot servers and their agents, plus a manager to check logs, in less than an hour, you should follow this repository. 
 
 ## Requirements
 Python 3.5

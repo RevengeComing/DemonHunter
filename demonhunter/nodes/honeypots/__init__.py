@@ -1,5 +1,6 @@
 import asyncio
 import json
+import logging
 
 
 class BaseHandler:
@@ -23,22 +24,23 @@ class BaseHandler:
         pass
 
 
-class BaseHoneypot:
+class BaseHoneypot(object):
     
     active_attacks = 0
 
-    def __init__(self, logfile=False, sqlite=False, interfaces=['0.0.0.0'], agents=[]):
+    def __init__(self, logfile=False, sqlite=False, interfaces=['0.0.0.0'], agents=None):
         self.logfile = logfile
         self.sqlite = sqlite
         self.interfaces = interfaces
-        self.agents = agents
+
+        if not agents:
+            self.agents = []
 
     def create_server(self, loop):
-        print(self)
         coro = loop.create_server(lambda: self.handler(self), self.interfaces, self.port)
         server = loop.run_until_complete(coro)
         for socket in server.sockets:
-            print('Serving on {0}'.format(socket.getsockname()))
+            logging.info('Serving on {0}'.format(socket.getsockname()))
         return server
 
 
@@ -81,7 +83,7 @@ class AgentProtocol(asyncio.Protocol):
             if self.agent_password:
                 self.transport.write(self.agent_password)
             else:
-                print("AgentManager Asks for password !!!??? did you forget to set a password ?")
+                logging.warning("AgentManager Asks for password !? did you forget to set a password ?")
                 self.transport.close()
 
     def send_data(self):

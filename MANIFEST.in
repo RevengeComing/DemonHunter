@@ -1,0 +1,2 @@
+include demonhunter/nodes/honeypots/http/nginx/*.html
+include demonhunter/nodes/honeypots/http/apache/*.html

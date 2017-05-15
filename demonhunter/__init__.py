@@ -6,4 +6,4 @@ __email__ = "s.hamzelooy@gmail.com"
 __status__ = "Development"
 
 from demonhunter.nodes.manager import Manager
-from demonhunter.dh import DemonHunter
+from demonhunter.dh import DemonHunter, get_current_hunter

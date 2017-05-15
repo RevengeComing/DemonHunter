@@ -6,7 +6,7 @@ DemonHunter is a framework to create a Honeypot network very simple and easy.
 
 setup(
     name='demonhunter',
-    version='1.0.0',
+    version='1.0.2',
 
     description='A Distributed Honeypot',
     long_description=long_description,
@@ -25,8 +25,13 @@ setup(
 
         'Programming Language :: Python :: 3.5',
     ],
-    install_requires=['flask', 'httptools'],
+    install_requires=['httptools'],
     packages=find_packages(),
 
     keywords='honeypot honeynet agent',
+
+    package_data={
+        '': ['*.html'],
+        'demonhunter': ['nodes/honeypots/http/nginx/*.html', 'nodes/honeypots/http/apache/*.html'],
+    }
 )
