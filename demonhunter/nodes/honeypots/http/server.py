@@ -110,8 +110,8 @@ class HTTPHandler(asyncio.Protocol, BaseHandler):
 
     def display_error(self, code, text, desc):
         self.set_status_code(code, text)
-        path = os.path.join(self.honeypot.www_folder, 'error.html')
-        if os.path.exists(path):
+        if self.honeypot.www_folder and os.path.exists(path):
+            path = os.path.join(self.honeypot.www_folder, 'error.html')
             self.resp_body = open(path, 'r').read().format(error_code=code,
                                                            status_text=text,
                                                            desc=desc,
