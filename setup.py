@@ -6,7 +6,7 @@ DemonHunter is a framework to create a Honeypot network very simple and easy.
 
 setup(
     name='demonhunter',
-    version='1.0.2',
+    version='1.1.1',
 
     description='A Distributed Honeypot',
     long_description=long_description,

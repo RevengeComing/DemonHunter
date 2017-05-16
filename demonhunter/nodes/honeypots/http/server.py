@@ -33,6 +33,7 @@ class HTTPHandler(asyncio.Protocol, BaseHandler):
         self.resp_headers = {}
         self.setup_handler()
         self.body = ""
+        self.error = False
 
     def add_resp_header(self, key, value):
         self.resp_headers[key] = value
@@ -56,9 +57,12 @@ class HTTPHandler(asyncio.Protocol, BaseHandler):
             self.request_version = hrp.get_http_version()
             self.send_response()
         except HttpParserInvalidMethodError:
-            self.request_version = None
+            self.data = data
+            self.error = True
             self.bad_request()
         except HttpParserError:
+            self.data = data
+            self.error = True
             self.bad_request()
 
     def on_url(self, url):
@@ -81,7 +85,9 @@ class HTTPHandler(asyncio.Protocol, BaseHandler):
     @property
     def server_details(self):
         return 'DemonHunter (ubuntu)'
-    
+
+    def generate_date_header(self):
+        self.add_resp_header('Date', str(datetime.datetime.now())) 
 
     def set_status_code(self, code, text):
         self.resp_status_code = code.encode()
@@ -110,7 +116,8 @@ class HTTPHandler(asyncio.Protocol, BaseHandler):
 
     def display_error(self, code, text, desc):
         self.set_status_code(code, text)
-        if self.honeypot.www_folder and os.path.exists(path):
+        if self.honeypot.www_folder and os.path.exists(
+                        os.path.join(self.honeypot.www_folder, 'error.html')):
             path = os.path.join(self.honeypot.www_folder, 'error.html')
             self.resp_body = open(path, 'r').read().format(error_code=code,
                                                            status_text=text,
@@ -124,6 +131,7 @@ class HTTPHandler(asyncio.Protocol, BaseHandler):
 
     def send_response(self):
         if not self.honeypot.www_folder:
+            print(self.url)
             if self.url == b"/" or self.url == b"/index.html":
                 self.run_default()
             else:
@@ -153,7 +161,7 @@ class HTTPHandler(asyncio.Protocol, BaseHandler):
         self.set_content_length()
 
         self.add_resp_header('Content-Type', 'text/html; charset=utf-8')
-        self.add_resp_header('Date', str(datetime.datetime.now()))
+        self.generate_date_header()
 
         response_headers_raw = b''.join(b'%s: %s\n' % (k.encode(), v.encode()) for k, v in \
                                                 self.resp_headers.items())
@@ -165,35 +173,51 @@ class HTTPHandler(asyncio.Protocol, BaseHandler):
 
         self.transport.write(self.resp_body)
         self.transport.close()
+        self.prepare_data()
 
-        saving_data = {
-            'protocol':'http',
+    def prepare_data(self):
+        if not self.error:
+            saving_data = {
+                'protocol':'http',
 
-            'request_http_version': str(self.request_version),
-            # 'response_http_version': self.resp_version.decode('utf-8'),
+                'request_http_version': str(self.request_version),
+                # 'response_http_version': self.resp_version.decode('utf-8'),
 
-            'request_headers': "\n".join(["%s: %s" % (key.decode('utf-8'), value.decode('utf-8'))
-                 for key, value in self.req_headers.items() ]),
-            # 'response_headers': "\n".join(["%s: %s" % (key, value)
-            #      for key, value in self.resp_headers.items() ]),
+                'request_headers': "\n".join(["%s: %s" % (key.decode('utf-8'), value.decode('utf-8'))
+                     for key, value in self.req_headers.items() ]),
+                # 'response_headers': "\n".join(["%s: %s" % (key, value)
+                #      for key, value in self.resp_headers.items() ]),
 
-            'body': self.body,
-            'url': self.url.decode('utf-8'),
+                'body': self.body,
+                'url': self.url.decode('utf-8'),
 
-            'status_code': self.resp_status_code.decode('utf-8'),
-            "status_text": self.resp_status_text.decode('utf-8'),
+                'status_code': self.resp_status_code.decode('utf-8'),
+                "status_text": self.resp_status_text.decode('utf-8'),
 
-            'from':self.transport.get_extra_info('peername')[0],
-            'time':time.time()
-        }
+                'from':self.transport.get_extra_info('peername')[0],
+                'time':time.time()
+            }
+            self.save_data(saving_data)
+        else:
+            saving_data = {
+                'protocol':'http',
+
+                'data_received': self.data.decode('utf-8'),
+
+                'from':self.transport.get_extra_info('peername')[0],
+                'time':time.time()
+            }
+            self.save_data(saving_data)
         self.clear()
-        self.save_data(saving_data)
+
 
     def clear(self):
         self.req_headers = {}
         self.resp_headers = {}
         self.resp_body = None
         self.body = ''
+        self.data = None
+        self.error = False
 
 
 class Apache(HTTPHandler):
@@ -224,6 +248,10 @@ class Nginx(HTTPHandler):
     @property
     def server_details(self):
         return "nginx/1.10.0 (Ubuntu)"
+
+    def generate_date_header(self):
+        "Tue, 16 May 2017 19:51:59 GMT"
+        self.add_resp_header('Date', datetime.datetime.now().strftime('%a, %d %m %Y %H:%M:%S GMT')) 
 
 
 class MicrosoftIIS(HTTPHandler):
