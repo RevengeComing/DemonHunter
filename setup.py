@@ -29,8 +29,10 @@ setup(
     packages=find_packages(),
 
     keywords='honeypot honeynet agent',
-
-    package_data={
+    scripts = [
+            'bin/dh_test'
+        ],
+    package_data = {
         '': ['*.html'],
         'demonhunter': ['nodes/honeypots/http/nginx/*.html', 'nodes/honeypots/http/apache/*.html'],
     }

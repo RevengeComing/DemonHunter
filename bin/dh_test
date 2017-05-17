@@ -1,0 +1,34 @@
+import asyncio
+
+from demonhunter import DemonHunter
+from demonhunter.nodes.honeypots.telnet import TelnetHoneypot, MicrosoftTelnet
+from demonhunter.nodes.honeypots.vnc import VNCHoneypot
+from demonhunter.nodes.honeypots.http import HTTPHoneypot, Apache
+
+def main():
+    loop = asyncio.get_event_loop()
+
+    hp = DemonHunter(loop)
+
+    vnc = VNCHoneypot(logfile="vnc.log")
+    hp.add_honeypot(vnc)
+
+    telnet = TelnetHoneypot(handler=MicrosoftTelnet, port=8023, logfile="telnet.log")
+    hp.add_honeypot(telnet)
+
+    http = HTTPHoneypot(handler=Apache, port=8080, logfile="http.log")
+    hp.add_honeypot(http)
+
+    hp.start()
+
+    try:
+        print("DemonHunter started ...")
+        loop.run_forever()
+    except KeyboardInterrupt:
+        hp.stop()
+        print("\nServer Closed")
+
+    loop.close()
+
+if __name__ == '__main__':
+    main()
