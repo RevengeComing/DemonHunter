@@ -20,11 +20,18 @@ Python 3.5
 
 For the latest version
 ```
-pip install git+https://github.com/RevengeComing/DemonHunter.git
+$ pip install git+https://github.com/RevengeComing/DemonHunter.git
 ```
 For stable version
 ```
-pip install demonhunter
+$ pip install demonhunter
+```
+
+## Want a Demo ?
+
+To run a demo run dh_test in command line after demonhunter installation
+```
+$ dh_test
 ```
 
 ## Documentation
