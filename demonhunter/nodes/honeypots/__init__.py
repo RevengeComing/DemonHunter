@@ -2,6 +2,8 @@ import asyncio
 import json
 import logging
 
+from demonhunter.core.loggers.logfile import FileLogger
+
 
 class BaseHandler:
     # https://svn.nmap.org/nmap/nmap-service-probes
@@ -17,21 +19,24 @@ class BaseHandler:
         for agent in self.honeypot.agents:
             agent.send_data(data)
 
-    def save_in_sqlite(data):
+    def save_in_sqlite(self, data):
         pass
 
-    def save_logfile(data):
-        pass
+    def save_logfile(self, data):
+        self.honeypot.file_logger.log(data)
 
 
 class BaseHoneypot(object):
     
     active_attacks = 0
 
-    def __init__(self, logfile=False, sqlite=False, interfaces=['0.0.0.0'], agents=None):
+    def __init__(self, logfile=None, sqlite=None, interfaces=['0.0.0.0'], agents=None):
         self.logfile = logfile
         self.sqlite = sqlite
         self.interfaces = interfaces
+
+        if self.logfile:
+            self.file_logger = FileLogger(self.logfile)
 
         if not agents:
             self.agents = []

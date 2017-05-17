@@ -131,7 +131,6 @@ class HTTPHandler(asyncio.Protocol, BaseHandler):
 
     def send_response(self):
         if not self.honeypot.www_folder:
-            print(self.url)
             if self.url == b"/" or self.url == b"/index.html":
                 self.run_default()
             else:
