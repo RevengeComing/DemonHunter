@@ -1,4 +1,5 @@
 from setuptools import setup, find_packages
+from demonhunter import __version__ as version
 
 long_description = """
 DemonHunter is a framework to create a Honeypot network very simple and easy.
@@ -6,7 +7,7 @@ DemonHunter is a framework to create a Honeypot network very simple and easy.
 
 setup(
     name='demonhunter',
-    version='1.1.1',
+    version=version,
 
     description='A Distributed Honeypot',
     long_description=long_description,
