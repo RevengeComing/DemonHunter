@@ -1,6 +1,3 @@
-from aiohttp import web
-
-from demonhunter.nodes.manager.app import add_routes, run_app
 from demonhunter.nodes.manager.agent.server import AgentManager
 from demonhunter.core.loggers.logfile import FileLogger
 
@@ -24,13 +21,13 @@ class Manager:
             print('AgentManager Serving on {0}'.format(server.sockets[0].getsockname()))
             self.agent_password = agent_password
 
-        if not web_app:
-            app = web.Application(loop=self.loop)
-            add_routes(app)
-            if self.webapp_address is None:
-                # this will only run internally, which I think is safe, but could run it on 0.0.0.0 by default
-                self.webapp_address = "127.0.0.1"
-            run_app(app, host=self.webapp_address)
+        # if not web_app:
+        #     app = web.Application(loop=self.loop)
+        #     add_routes(app)
+        #     if self.webapp_address is None:
+        #         # this will only run internally, which I think is safe, but could run it on 0.0.0.0 by default
+        #         self.webapp_address = "127.0.0.1"
+        #     run_app(app, host=self.webapp_address)
 
         if logfile:
             self.file_logger = FileLogger(logfile)
