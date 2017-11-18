@@ -1,3 +1,5 @@
+#!/home/azarakhsh/works/DemonHunter/test/bin/python3
+
 import asyncio
 
 from demonhunter import DemonHunter
@@ -22,7 +24,10 @@ def main():
     hp.start()
 
     try:
-        print("DemonHunter started ...")
+        print("DemonHunter demo started ...")
+        print("This demo contains Microsoft Telnet on 0.0.0.0:8023 and it logs in ./telnet.log")
+        print("And Standard VNC on 0.0.0.0:5900 and it logs in ./vnc.log")
+        print("And Apache webserver on 0.0.0.0:8080 and it logs in ./http.log")
         loop.run_forever()
     except KeyboardInterrupt:
         hp.stop()

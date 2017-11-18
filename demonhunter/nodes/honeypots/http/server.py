@@ -2,6 +2,7 @@ import datetime
 import time
 import logging
 import os
+import inspect
 import asyncio
 
 from httptools import HttpRequestParser
@@ -10,7 +11,7 @@ from httptools.parser.errors import (HttpParserInvalidMethodError,
 
 from demonhunter.nodes.honeypots import BaseHandler, BaseHoneypot
 
-HTTP_FOLDER_PATH = os.path.abspath("demonhunter/nodes/honeypots/http")
+HTTP_FOLDER_PATH = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 NGINX_FOLDER_PATH = os.path.join(HTTP_FOLDER_PATH, 'nginx/')
 APACHE_FOLDER_PATH = os.path.join(HTTP_FOLDER_PATH, 'apache/')
 DEFAULT_FOLDER_PATH = os.path.join(HTTP_FOLDER_PATH, 'default/')
