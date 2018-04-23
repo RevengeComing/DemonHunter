@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Test</title>
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
+	<script type="text/javascript" src="{{url_for('static', filename='js/jquery.min.js')}}"></script>
+	<script type="text/javascript" src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
+	<script type="text/javascript" src="{{url_for('static', filename='js/ws.js')}}"></script>
+</head>
+<body>
+	<div class="container">
+		<ul class="nav justify-content-center main-nav">
+		  <li class="nav-item">
+		    <a class="nav-link" href="{{url_for('dashboard')}}">Dashboard</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link" href="{{url_for('users_list')}}">Users</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link" href="{{url_for('agents_list')}}">Agents</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link" href="{{url_for('honeypot_data')}}">Data</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link disabled" href="{{url_for('logout')}}">Logout</a>
+		  </li>
+		</ul>
+		{% with messages = get_flashed_messages() %}
+		  {% if messages %}
+		    <ul class=flashes>
+		    {% for message in messages %}
+		      <li>{{ message }}</li>
+		    {% endfor %}
+		    </ul>
+		  {% endif %}
+		{% endwith %}
+		<div class="notification-box hidden">
+			<div class="notif-type">
+				<h4 id="notif-title"></h4>
+				<p  id="notif-content"></p>				
+			</div>
+		</div>
+		<div class="content">
+			{% block content %}
+				
+			{% endblock %}
+		</div>
+	</div>
+</body>
+</html>

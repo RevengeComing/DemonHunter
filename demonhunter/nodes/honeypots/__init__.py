@@ -1,6 +1,7 @@
 import asyncio
 import json
 import logging
+import aiohttp
 
 from demonhunter.core.loggers.logfile import FileLogger
 
@@ -17,7 +18,7 @@ class BaseHandler:
 
     def alter_agents(self, data):
         for agent in self.honeypot.agents:
-            agent.send_data(data)
+            asyncio.ensure_future(agent.send_data(data))
 
     def save_in_sqlite(self, data):
         pass
@@ -30,7 +31,7 @@ class BaseHoneypot(object):
     
     active_attacks = 0
 
-    def __init__(self, logfile=None, sqlite=None, interfaces=['0.0.0.0'], agents=None):
+    def __init__(self, logfile=None, sqlite=None, interfaces=['0.0.0.0']):
         self.logfile = logfile
         self.sqlite = sqlite
         self.interfaces = interfaces
@@ -38,8 +39,10 @@ class BaseHoneypot(object):
         if self.logfile:
             self.file_logger = FileLogger(self.logfile)
 
-        if not agents:
-            self.agents = []
+        self.agents = []
+
+    def add_agent(self, agent):
+        self.agents.append(agent)
 
     def create_server(self, loop):
         coro = loop.create_server(lambda: self.handler(self), self.interfaces, self.port)
@@ -50,49 +53,20 @@ class BaseHoneypot(object):
 
 
 class Agent():
-
-    port = 16742
-
-    def __init__(self, target, honeypots, loop, agent_password=None):
-        self.loop = loop
-        self.targets = target
+    def __init__(self, manager_address, honeypots, token):
         for honeypot in honeypots:
             honeypot.agents.append(self)
-        self.agent_password = None if not agent_password else agent_password.encode()
 
-    # TODO: Secure the transport ssl/or something.
-    def send_data(self, data):
-        data = json.dumps(data)
-        for target in self.targets:
-            # i guess its not a good way :/
-            coro = self.loop.create_connection(lambda: AgentProtocol(data, self.agent_password),
-                                               target, 16742)
-            self.loop.call_soon_threadsafe(asyncio.async, coro)
+        self.manager_address = manager_address
+        if manager_address.endswith('/'):
+            self.manager_address = manager_address[:-1]
+        self.token = token
 
+    @property
+    def _address(self):
+        return "%s/agents/call/%s/" % (self.manager_address, self.token)
 
-class AgentProtocol(asyncio.Protocol):
-
-    state = 0
-
-    def __init__(self, message, agent_password):
-        self.message = message
-        self.agent_password = agent_password
-
-    def connection_made(self, transport):
-        self.transport = transport
-
-    def data_received(self, data):
-        if data == b"Hello Agent!":
-            self.send_data()
-        elif data == b"Hello Agent! Give Me The Night Word":
-            if self.agent_password:
-                self.transport.write(self.agent_password)
-            else:
-                logging.warning("AgentManager Asks for password !? did you forget to set a password ?")
-                self.transport.close()
-
-    def send_data(self):
-        self.transport.write(str.encode(self.message))
-
-    def connection_lost(self, exc):
-        pass
+    async def send_data(self, data):
+        async with aiohttp.ClientSession() as session:
+            async with session.post(self._address, json=data) as resp:
+                pass

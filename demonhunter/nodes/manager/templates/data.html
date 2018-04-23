@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if page != 1 %}<a href="{{url_for('honeypot_data', page=page-1)}}">Prev page</a>{% endif %} <a href="{{url_for('honeypot_data', page=page+1)}}">Next Page</a>
+<table class="table">
+	<thead>
+		<tr>
+			<td>Data ID</td>
+			<td>Agent address</td>
+			<td>Attack address</td>
+			<td>Time</td>
+			<td>Protocol</td>
+			<td>Data</td>
+		</tr>
+	</thead>
+	<tbody>
+		{% for data in datas %}
+		<tr>
+			<td>{{data.id}}</td>
+			<td>{{data.honeypot_address}}</td>
+			<td>{{data.from_address}}</td>
+			<td>{{data.utc_time()}}</td>
+			<td>{{data.protocol}}</td>
+			<td>{{data.data}}</td>
+		</tr>			
+		{% endfor %}
+	</tbody>
+</table>
+{% endblock %}

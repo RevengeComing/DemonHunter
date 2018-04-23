@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="col-md-6">
+	<form method="POST">
+		<div class="form-group">
+			<label>Username</label>
+			<input type="text" class="form-control" name="username" required="">
+		    <small id="emailHelp" class="form-text text-muted">The information is used for user to login inside panel.</small>
+		</div>
+		<div class="form-group">
+			<label>Password</label>
+			<input type="password" class="form-control" name="password" required="">
+		    <small id="emailHelp" class="form-text text-muted">Please choose a secure password.</small>
+		</div>
+		<button type="submit" class="btn btn-primary">Add User</button>
+	</form>
+</div>
+{% endblock %}

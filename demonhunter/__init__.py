@@ -7,3 +7,4 @@ __status__ = "Development"
 
 from demonhunter.nodes.manager import Manager
 from demonhunter.dh import DemonHunter, get_current_hunter
+from demonhunter.nodes.honeypots import Agent

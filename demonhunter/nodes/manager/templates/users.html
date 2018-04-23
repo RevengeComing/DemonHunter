@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<center><a class="btn btn-info" href='{{url_for("users_create")}}'>Add User</a></center>
+<table class="table">
+	<thead>
+		<tr>
+			<td>User ID</td>
+			<td>Username</td>
+			<td>Actions</td>
+		</tr>
+	</thead>
+	<tbody>
+		{% for user in users %}
+		<tr>
+			<td>{{user.id}}</td>
+			<td>{{user.username}}</td>
+			<td><a href="{{url_for('users_delete', user_id=user.id)}}">Delete</a></td>
+		</tr>			
+		{% endfor %}
+	</tbody>
+</table>
+{% endblock %}

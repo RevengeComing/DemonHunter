@@ -1,0 +1,35 @@
+.nav > li > a{
+	color:white;
+}
+.main-nav {
+	background-color: black;
+	margin-bottom: 15px;
+}
+.dashboard-title {
+	margin-top: 30px;
+}
+.notification-box {
+	position: fixed;
+	width: 300px;
+	min-height: 80px;
+	border-radius: 10px;
+	left: 50px;
+}
+.notif-type {
+	padding:8px;	
+}
+.notif-type.alart {
+	background-color: #ff9494;
+}
+.notif-type.warning {
+	background-color: #ffd894;
+}
+.notif-type.success {
+	background-color: #94ffbf;
+}
+.notif-type.info {
+	background-color: #94caff;
+}
+.hidden {
+	display: none;
+}

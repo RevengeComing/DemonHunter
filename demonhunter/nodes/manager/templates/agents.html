@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<center>
+	<a class="btn btn-info" href='{{url_for("agents_add")}}'>Add Agent</a>
+	<h2>* Use tokens while initializing agents.</h2>
+</center>
+<table class="table">
+	<thead>
+		<tr>
+			<td>Agent ID</td>
+			<td>IP Address</td>
+			<td>Token</td>
+			<td>Last Message Time</td>
+			<td>Actions</td>
+		</tr>
+	</thead>
+	<tbody>
+		{% for agent in agents %}
+		<tr>
+			<td>{{agent.id}}</td>
+			<td>{{agent.address}}</td>
+			<td>{{agent.token}}</td>
+			<td>{{agent.last_message}}</td>
+			<td><a href="{{url_for('agents_delete', agent_id=agent.id)}}">Delete</a></td>
+		</tr>			
+		{% endfor %}
+	</tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="col-md-6">
+	<form method="POST">
+		<div class="form-group">
+			<label>IP Address</label>
+			<input type="text" class="form-control" name="address" required="">
+		    <small id="emailHelp" class="form-text text-muted">IP address of agent. with IP address and generated token agent can send data.</small>
+		</div>
+		<button type="submit" class="btn btn-primary">Add Agent</button>
+	</form>
+</div>
+{% endblock %}
