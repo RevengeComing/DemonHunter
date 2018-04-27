@@ -25,6 +25,10 @@ For the latest version you can simply install it with pip:
 ```
 $ pip install git+https://github.com/RevengeComing/DemonHunter.git
 ```
+You can also install it from pypi:
+```
+$ pip install demonhunter
+```
 
 ## How to run DemonHunter
 
