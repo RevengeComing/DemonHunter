@@ -1,6 +1,6 @@
 __author__ = "Sepehr Hamzehlouy"
 __copyright__ = "Copyright 2016, Sepehr Hamzehlouy"
-__version__ = "1.1.7"
+__version__ = "2.0.0"
 __maintainer__ = "Sepehr Hamzehlouy"
 __email__ = "s.hamzelooy@gmail.com"
 __status__ = "Development"
