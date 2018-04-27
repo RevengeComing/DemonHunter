@@ -1,44 +1,48 @@
 # DemonHunter
 
-If you want to create low interaction Honepot servers and their agents, plus a manager to check logs, in less than an hour, you should follow this repository.
+DemnonHunter is a distributed low interaction honeypot with Agent/Master design.
 
-DemonHunter allows you to create your honeynet all costumized by yourself, from ports to protocol handlers.
-For example you want to have http protocol, you can have nginx 1.10.0 honeypot or apache 2.4.18 or maybe IIS ?
-For example you want to have telnet protocol, you can have Microsoft Telnet Service honeypot or Debian GNU Linux honeypot ?
-Or maybe you want to run a honeypot(any protocol) on another port ?
-Maybe you want your honeypot work as Agent and send data to another server ?
+Agents are honeypots of diffrent protocols and master is where receives attack information and shows to honeypot administrators.
 
-We support them all!
+By using DemonHunter you are capable of choosing from various protocol handlers, for example you can choose between Apache(v2.4.18) or Nginx(1.10.0). Handlers are fake and you don't need to install anything extra on your server.
+
+Each Agent is capable of holding more than one protocol. And each master can hold unlimitted count of agents.
 
 ![alt text](https://cloud.githubusercontent.com/assets/23046907/26075182/9e23721c-39c9-11e7-87fd-53e9633a02d1.jpg)
 
 
 ## Requirements
-Developed and tested on python3.6
+
+DemonHunter is developed under python3.6 and might work on python3.5(testers are welcome to report bugs)
+
+## Documents
+
+I will place documents on http://demonhunter.readthedocs.io
 
 ## Installation
 
-For the latest version
+For the latest version you can simply install it with pip:
 ```
 $ pip install git+https://github.com/RevengeComing/DemonHunter.git
 ```
 
-## Want a Demo ?
+## How to run DemonHunter
 
-To run a demo run dh_test in command line after demonhunter installation.
-```
-$ dh_run
-```
+As i mentioned DemonHunter has 2 sides:
+	* Master
+	* Agents (Honeypots)
 
-Run below if you need help:
-```
-$ dh_run --help
-```
+To run Master you can simply execute ```dh_run``` command line interface.
+By running dh cli, dh master will run under http://127.0.0.1:8000 + sqlitedb(current_dir/test.db). these are default options for dh_run cli. for changing them run ```dh_run --help``` to have more information on how to change the defaults.
 
-Authentication for admin is:
-```
-username: admin
-password: admin
-```
+To access DemonHunter's Master interface for first time you can use ```username: admin, password: admin```. After logging in for first time create a user and delete default admin.
 
-Delete default admin and create new User for yourself.
+## DemonHunter WebMaster Screenshots
+
+![screen_shot1](https://screenshots.firefox.com/fqOBng5cMQGuEoav/127.0.0.1)
+![screen_shot2](https://screenshots.firefox.com/XTVmQn4s9Cg0A8ps/127.0.0.1)
+![screen_shot3](https://screenshots.firefox.com/GKXzRsOCyLU3QPaA/127.0.0.1)
+
+## Contribution
+
+I really accept contributions, you can simply open an issue and create a discussion about how DH should move forward.
