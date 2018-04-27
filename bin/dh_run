@@ -3,9 +3,9 @@ import click
 
 
 @click.command()
-@click.option('--dh-type', default="manager", help="manager|honeypot **default:manager")
-@click.option('--host', default='0.0.0.0', help="manager/honeypot address **default:0.0.0.0") 
-@click.option('--port', default=8000, help="manager port **default:8000")
+@click.option('--dh-type', default="master", help="master|honeypot **default:master")
+@click.option('--host', default='0.0.0.0', help="master/honeypot address **default:0.0.0.0") 
+@click.option('--port', default=8000, help="master port **default:8000")
 @click.option('--db-type', default='sqlite', help="sqlite|postgres **default:sqlite")
 @click.option('--sqlite', default=str(os.getcwd() + '/test.db'),
     help="address for sqlite db **default:test.db")
@@ -18,25 +18,23 @@ import click
 @click.option('--http-handler', default='apache', help="nginx|apache **default:apache")
 @click.option('--telnet-handler', default='microsoft', help="microsoft|debian **default:microsoft")
 @click.option('--agent/--no-agent', default=False, help="use this option if you want an agent **default:--no-agent")
-@click.option('--manager-addr', default='http://127.0.0.1:8000', help="manager address **default:http://127.0.0.1:8000")
+@click.option('--master-addr', default='http://127.0.0.1:8000', help="master address **default:http://127.0.0.1:8000")
 @click.option('--agent-token', default=None, help="agent token **default:None")
 def main(dh_type, host, port, db_type, sqlite,
          pg_user, pg_pass, pg_host, pg_database,
          hp_protocol, www_folder, http_handler,
-         telnet_handler, agent, manager_addr,
+         telnet_handler, agent, master_addr,
          agent_token):
-    if dh_type == "manager":
-        from demonhunter import Manager
+    if dh_type == "master":
+        from demonhunter import Master
 
-        if db_type == "sqlite" and not sqlite.startswith('/'):
-            sqlite = str(os.getcwd() + '/' + sqlite)
 
-        manager = Manager(host=host, port=port, db_type=db_type,
+        master = Master(host=host, port=port, db_type=db_type,
                           sqlite=sqlite, pg_host=pg_host, pg_user=pg_user,
                           pg_pass=pg_pass, pg_database=pg_database)
 
-        print("Running DemonHunter web manager.")
-        manager.run_webapp()
+        print("Running DemonHunter web master.")
+        master.run_webapp()
 
     elif dh_type == "honeypot":
         import asyncio
@@ -76,7 +74,7 @@ def main(dh_type, host, port, db_type, sqlite,
         if agent:
             from demonhunter import Agent
             _agent = Agent(
-                manager_addr,
+                master_addr,
                 [hp_server],
                 agent_token
             )

@@ -38,9 +38,9 @@ setup(
         'demonhunter': [
             'nodes/honeypots/http/nginx/*.html',
             'nodes/honeypots/http/apache/*.html',
-            'nodes/manager/templates/*',
-            'nodes/manager/static/css/*',
-            'nodes/manager/static/js/*'
+            'nodes/master/templates/*',
+            'nodes/master/static/css/*',
+            'nodes/master/static/js/*'
         ],
     }
 )

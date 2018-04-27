@@ -37,8 +37,6 @@ def create_database():
 @app.route('/dashboard/')
 @login_required
 def dashboard():
-    from flask import current_app
-    print(current_app.static_folder)
     return render_template('dashboard.html')
 
 @app.route('/')

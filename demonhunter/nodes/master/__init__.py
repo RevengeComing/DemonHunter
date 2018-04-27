@@ -7,14 +7,17 @@ from .webapp import app, db, sockets, login_manager
 alphabet = string.ascii_letters + string.digits
 
 
-class Manager:
+class Master:
     agents = list()
     def __init__(self, host, port, db_type,
-    			 sqlite, pg_host, pg_user,
-                 pg_pass, pg_database):
+    			 sqlite=None, pg_host=None, pg_user=None,
+                 pg_pass=None, pg_database=None):
         self.host = host
         self.port = port
 
+        if db_type == "sqlite" and not sqlite.startswith('/'):
+            sqlite = str(os.getcwd() + '/' + sqlite)
+            
         if db_type == "sqlite":
             self.db_string = "sqlite:///%s" % sqlite
         elif db_type == "postgres":
