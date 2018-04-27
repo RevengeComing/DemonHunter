@@ -21,7 +21,7 @@ telnet = TelnetHoneypot(port=8023, handler=MicrosoftTelnet, interfaces=["x.x.x.x
 hp.add_honeypot(telnet)
 
 # Create An Agent, Where Should data transfered ?
-agent = Agent(["z.z.z.z"], [telnet, vnc], loop)
+agent = Agent(["http://localhost:8000"], [telnet, vnc], loop)
 # Add The Agent To your DemonHunter Instance
 hp.add_agent(agent)
 

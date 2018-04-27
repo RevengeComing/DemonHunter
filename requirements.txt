@@ -5,3 +5,4 @@ flask==0.12.2
 flask-login==0.4.1
 flask-sqlalchemy==2.3.2
 meinheld==0.6.1
+click==6.7

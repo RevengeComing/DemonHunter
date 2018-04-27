@@ -18,16 +18,8 @@ app = Flask(
     static_folder=static_folder
 )
 
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///test.db"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-app.config['SECRET_KEY'] = "CHANGE IT OR READ IT FROM OS.ENVIRON VARIABLES"
 app.debug = True
 
-login_manager.login_view = "login"
-login_manager.init_app(app)
-db.init_app(app)
-sockets.init_app(app)
 
 @app.before_first_request
 def create_database():
@@ -45,6 +37,8 @@ def create_database():
 @app.route('/dashboard/')
 @login_required
 def dashboard():
+    from flask import current_app
+    print(current_app.static_folder)
     return render_template('dashboard.html')
 
 @app.route('/')
@@ -59,7 +53,6 @@ def notifications(ws):
     try:
         while True:
             message = ws.wait()
-            print("recv msg %s" % message)
             if message is None:
                 break
     finally:
@@ -166,7 +159,7 @@ def agents_delete(agent_id):
 @app.route('/agents/call/<token>/', methods=['POST'])
 def agents_call(token):
     a = Agent.query.filter_by(token=token).first()
-    if not a or not a.address == request.remote_addr:
+    if not a or a.address != request.remote_addr:
         for ws in online_users:
             ws.send(json.dumps(
                     {'type':'alart',

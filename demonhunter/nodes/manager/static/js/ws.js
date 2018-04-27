@@ -9,7 +9,6 @@ $(document).ready(function(){
     var socket = new WebSocket('ws://' + document.domain + ':' + location.port + '/notifications/');
     socket.onmessage = function (event) {
     	var data = JSON.parse(event.data);
-    	console.log(data);
         show_notif(data.type, data.title, data.content);
     }
 });

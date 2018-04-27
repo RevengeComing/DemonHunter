@@ -1,18 +1,7 @@
-import asyncio
 from demonhunter import Manager
 
-loop = asyncio.get_event_loop()
+manager = Manager(host='0.0.0.0', port=8000,
+				  pg_host='localhost', pg_user="demonhunter",
+				  pg_pass="demonhunter", pg_database="demonhunter")
 
-# You can set logfile location to any place like "/var/log/demonhunter.log"
-# specify management IP via server_address
-# manager = Manager(loop, server_address='10.10.10.10', logfile='events.log')
-manager = Manager(loop, server_address=None, logfile='events.log')
-# Specify The Location of Agents ?
-manager.add_agent_address("0.0.0.0")
-
-try:
-    loop.run_forever()
-except KeyboardInterrupt:
-    print("\nServer Closed")
-
-loop.close()
+manager.run_webapp()

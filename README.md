@@ -14,7 +14,7 @@ We support them all!
 
 
 ## Requirements
-Python 3.5
+Developed and tested on python3.6
 
 ## Installation
 
@@ -22,22 +22,23 @@ For the latest version
 ```
 $ pip install git+https://github.com/RevengeComing/DemonHunter.git
 ```
-For stable version
-```
-$ pip install demonhunter
-```
 
 ## Want a Demo ?
 
-To run a demo run dh_test in command line after demonhunter installation
+To run a demo run dh_test in command line after demonhunter installation.
 ```
-$ dh_test
+$ dh_run
 ```
 
-## Documentation
+Run below if you need help:
+```
+$ dh_run --help
+```
 
-check [Here](https://revengecoming.github.io/DemonHunter/) , i'll place all docs here.
+Authentication for admin is:
+```
+username: admin
+password: admin
+```
 
-## Contribution
-
-I will be glad to have a contributor on protocols. or maybe bugfixes and/or suggests on how it should work.
+Delete default admin and create new User for yourself.

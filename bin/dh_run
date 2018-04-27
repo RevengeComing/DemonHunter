@@ -1,0 +1,100 @@
+import os
+import click
+
+
+@click.command()
+@click.option('--dh-type', default="manager", help="manager|honeypot **default:manager")
+@click.option('--host', default='0.0.0.0', help="manager/honeypot address **default:0.0.0.0") 
+@click.option('--port', default=8000, help="manager port **default:8000")
+@click.option('--db-type', default='sqlite', help="sqlite|postgres **default:sqlite")
+@click.option('--sqlite', default=str(os.getcwd() + '/test.db'),
+    help="address for sqlite db **default:test.db")
+@click.option('--pg-user', default='demonhunter', help="postgres db user **default:demonhunter")
+@click.option('--pg-pass', default='demonhunter', help="postgres db password **default:demonhunter")
+@click.option('--pg-host', default='localhost', help="postgres db host **default:localhost")
+@click.option('--pg-database', default='demonhunter', help="postgres db name **default:demonhunter")
+@click.option('--hp-protocol', default='http', help="vnc|http|telnet **default:http")
+@click.option('--www-folder', default='/var/fakewww', help="static folder of http server **default:/var/fakewww")
+@click.option('--http-handler', default='apache', help="nginx|apache **default:apache")
+@click.option('--telnet-handler', default='microsoft', help="microsoft|debian **default:microsoft")
+@click.option('--agent/--no-agent', default=False, help="use this option if you want an agent **default:--no-agent")
+@click.option('--manager-addr', default='http://127.0.0.1:8000', help="manager address **default:http://127.0.0.1:8000")
+@click.option('--agent-token', default=None, help="agent token **default:None")
+def main(dh_type, host, port, db_type, sqlite,
+         pg_user, pg_pass, pg_host, pg_database,
+         hp_protocol, www_folder, http_handler,
+         telnet_handler, agent, manager_addr,
+         agent_token):
+    if dh_type == "manager":
+        from demonhunter import Manager
+
+        if db_type == "sqlite" and not sqlite.startswith('/'):
+            sqlite = str(os.getcwd() + '/' + sqlite)
+
+        manager = Manager(host=host, port=port, db_type=db_type,
+                          sqlite=sqlite, pg_host=pg_host, pg_user=pg_user,
+                          pg_pass=pg_pass, pg_database=pg_database)
+
+        print("Running DemonHunter web manager.")
+        manager.run_webapp()
+
+    elif dh_type == "honeypot":
+        import asyncio
+        from demonhunter import DemonHunter
+
+        loop = asyncio.get_event_loop()
+
+        hp = DemonHunter(loop)
+
+        if hp_protocol == "http":
+            from demonhunter.nodes.honeypots.http import HTTPHoneypot
+            handler_name = http_handler
+            if handler_name == 'apache':
+                from demonhunter.nodes.honeypots.http import Apache as handler
+            elif handler_name == "nginx":
+                from demonhunter.nodes.honeypots.http import Nginx as handler
+
+            hp_server = HTTPHoneypot(handler=handler,
+                www_folder=www_folder, interfaces=[host])
+
+        elif hp_protocol == "telnet":
+            from demonhunter.nodes.honeypots.telnet import TelnetHoneypot
+            handler_name = telnet_handler
+            if handler_name == "microsoft":
+                from demonhunter.nodes.honeypots.telnet import MicrosoftTelnet as handler
+            elif handler_name == "debian":
+                from demonhunter.nodes.honeypots.telnet import DebianTelnet as handler
+
+            hp_server = TelnetHoneypot(handler=handler, interfaces=[host])
+
+        elif hp_protocol == "vnc":
+            from demonhunter.nodes.honeypots.vnc import VNCHoneypot
+            hp_server = VNCHoneypot(interfaces=[host])
+            handler_name = "standard"
+
+        hp.add_honeypot(hp_server)
+        if agent:
+            from demonhunter import Agent
+            _agent = Agent(
+                manager_addr,
+                [hp_server],
+                agent_token
+            )
+
+            hp.add_agent(_agent)
+
+        print("Running DemonHunter honeypot %s %s" %
+                (hp_protocol, handler_name))
+        hp.start()
+
+        try:    
+            print("DemonHunter started ...")
+            loop.run_forever()
+        except KeyboardInterrupt:
+            hp.stop()
+            print("\nServer Closed")
+
+        loop.close()
+
+if __name__ == '__main__':
+    main()
