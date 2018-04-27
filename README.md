@@ -39,9 +39,9 @@ To access DemonHunter's Master interface for first time you can use ```username:
 
 ## DemonHunter WebMaster Screenshots
 
-![screen_shot1](https://screenshots.firefox.com/fqOBng5cMQGuEoav/127.0.0.1)
-![screen_shot2](https://screenshots.firefox.com/XTVmQn4s9Cg0A8ps/127.0.0.1)
-![screen_shot3](https://screenshots.firefox.com/GKXzRsOCyLU3QPaA/127.0.0.1)
+![screen_shot1](https://screenshotscdn.firefoxusercontent.com/images/c3e22529-585d-40ad-accd-e70a53b38718.png)
+![screen_shot2](https://screenshotscdn.firefoxusercontent.com/images/aa89451e-1a81-432a-8adb-69964bfd0d8b.png)
+![screen_shot3](https://screenshotscdn.firefoxusercontent.com/images/9de9a85d-aa0d-480e-9c80-a50f526d907d.png)
 
 ## Contribution
 
