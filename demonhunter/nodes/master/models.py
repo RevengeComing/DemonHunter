@@ -1,7 +1,9 @@
 import datetime
 import asyncio
 import bcrypt
-import secrets
+
+
+from itsdangerous import URLSafeSerializer
 
 from flask_login import UserMixin
 
@@ -66,5 +68,16 @@ class Agent(db.Model):
     last_message = db.Column(db.Integer)
 
     def generate_token(self):
-        self.token = secrets.token_urlsafe()
+        s = URLSafeSerializer('secret-key')        
+        self.token = s.dumps(self.address)
         return self.token
+
+    def utc_time(self):
+        if self.last_message:
+            dt = datetime.datetime.utcfromtimestamp(self.last_message)
+            return "%s/%s/%s %s:%s:%s" % (
+                    dt.year, dt.month, dt.day,
+                    dt.hour, dt.minute, dt.second
+                )
+        else:
+            return "never"

@@ -21,7 +21,7 @@
 			<td>{{agent.id}}</td>
 			<td>{{agent.address}}</td>
 			<td>{{agent.token}}</td>
-			<td>{{agent.last_message}}</td>
+			<td>{{agent.utc_time()}}</td>
 			<td><a href="{{url_for('agents_delete', agent_id=agent.id)}}">Delete</a></td>
 		</tr>			
 		{% endfor %}

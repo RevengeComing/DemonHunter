@@ -1,5 +1,6 @@
 env/
 venv/
+env3/
 build/
 dist/
 

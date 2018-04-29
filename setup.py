@@ -1,13 +1,21 @@
 from setuptools import setup, find_packages
-from demonhunter import __version__ as version
 
 long_description = """
 DemonHunter is a framework to create a Honeypot network very simple and easy.
 """
 
+
+def requirements():
+    reqs = []
+    with open('requirements.txt', 'r') as f:
+        for line in f:
+            reqs.append(line.replace('\n', ''))
+    return reqs
+
+
 setup(
     name='demonhunter',
-    version=version,
+    version='2.0.0',
 
     description='A Distributed Honeypot',
     long_description=long_description,
@@ -26,7 +34,7 @@ setup(
 
         'Programming Language :: Python :: 3.5',
     ],
-    install_requires=['httptools'],
+    install_requires=requirements(),
     packages=find_packages(),
 
     keywords='honeypot honeynet agent',

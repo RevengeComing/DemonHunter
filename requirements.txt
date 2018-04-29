@@ -1,8 +1,9 @@
 httptools==0.0.11
-aiohttp==3.1.3
+aiohttp==2.3.10
 bcrypt==3.1.4
 flask==0.12.2
 flask-login==0.4.1
 flask-sqlalchemy==2.3.2
+flask-sockets==0.2.1
 meinheld==0.6.1
 click==6.7
