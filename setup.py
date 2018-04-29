@@ -5,17 +5,22 @@ DemonHunter is a framework to create a Honeypot network very simple and easy.
 """
 
 
-def requirements():
-    reqs = []
-    with open('requirements.txt', 'r') as f:
-        for line in f:
-            reqs.append(line.replace('\n', ''))
-    return reqs
+requirements = [
+    "httptools==0.0.11",
+    "aiohttp==2.3.10",
+    "bcrypt==3.1.4",
+    "flask==0.12.2",
+    "flask-login==0.4.1",
+    "flask-sqlalchemy==2.3.2",
+    "flask-sockets==0.2.1",
+    "meinheld==0.6.1",
+    "click==6.7",
+]
 
 
 setup(
     name='demonhunter',
-    version='2.0.0',
+    version='2.0.3',
 
     description='A Distributed Honeypot',
     long_description=long_description,
@@ -34,7 +39,7 @@ setup(
 
         'Programming Language :: Python :: 3.5',
     ],
-    install_requires=requirements(),
+    install_requires=requirements,
     packages=find_packages(),
 
     keywords='honeypot honeynet agent',
