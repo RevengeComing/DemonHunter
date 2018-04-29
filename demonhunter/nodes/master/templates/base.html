@@ -36,10 +36,13 @@
 		    </ul>
 		  {% endif %}
 		{% endwith %}
-		<div class="notification-box hidden">
+		<div id="notification-box" class="notification-box" style="display: none;">
+			<button type="button" class="close notif-box-close" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
 			<div class="notif-type">
 				<h4 id="notif-title"></h4>
-				<p  id="notif-content"></p>				
+				<p  id="notif-content"></p>
 			</div>
 		</div>
 		<div class="content">

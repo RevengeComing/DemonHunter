@@ -182,7 +182,7 @@ def agents_call(token):
     db.session.add(hpd)
     db.session.commit()
 
-    content = 'An attack from %s to %s at %d' % (from_address, a.address, attack_time)
+    content = 'An attack from %s to %s at %s' % (from_address, a.address, hpd.utc_time())
     for ws in online_users:
         ws.send(json.dumps({'type':'success',
                             'content':content,

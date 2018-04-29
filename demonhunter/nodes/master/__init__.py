@@ -1,4 +1,6 @@
+import os
 import string
+
 from random import choice
 
 from .webapp import app, db, sockets, login_manager

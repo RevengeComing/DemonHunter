@@ -33,7 +33,7 @@ def main(dh_type, host, port, db_type, sqlite,
                           sqlite=sqlite, pg_host=pg_host, pg_user=pg_user,
                           pg_pass=pg_pass, pg_database=pg_database)
 
-        print("Running DemonHunter web master.")
+        print("Running DemonHunter web master on http://%s:%d ." % (host, port))
         master.run_webapp()
 
     elif dh_type == "honeypot":

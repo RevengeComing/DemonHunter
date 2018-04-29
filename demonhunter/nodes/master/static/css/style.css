@@ -9,11 +9,10 @@
 	margin-top: 30px;
 }
 .notification-box {
-	position: fixed;
-	width: 300px;
+	position: absolute;
+	width: 400px;
 	min-height: 80px;
-	border-radius: 10px;
-	left: 50px;
+	border: 1px solid black;
 }
 .notif-type {
 	padding:8px;	

@@ -51,7 +51,7 @@ class HoneypotData(db.Model):
 
     def utc_time(self):
         dt = datetime.datetime.utcfromtimestamp(self.attack_time)
-        return "%s/%s/%s %d:%d:%d" % (
+        return "%s/%s/%s %s:%s:%s" % (
                 dt.year, dt.month, dt.day,
                 dt.hour, dt.minute, dt.second
             )
